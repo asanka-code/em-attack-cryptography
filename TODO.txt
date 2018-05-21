@@ -1,0 +1,8 @@
+
+(1) Run AES on the device and see how we get the EM emission patterns.
+
+    openssl aes-256-cbc -in message.txt -out ciphertext.aes -pass pass:asanka
+
+    openssl aes-256-cbc -d -in ciphertext.aes -out decrypted.txt -pass pass:asanka
+
+
