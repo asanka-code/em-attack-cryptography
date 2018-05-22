@@ -13,11 +13,6 @@ def logEntry(msg):
 	logfile.write(LOG)
 	print(LOG)
 
-# start EM signal capture
-def startHackRF():
-	print("Starting HackRF...")
-	subprocess.Popen(["ping", "8.8.8.8"])
-
 # Log file (file buffer size is set to 0 to write immediately)
 logfile = open("logfile.txt", "w", 0)
 
@@ -29,8 +24,8 @@ sock.bind((UDP_IP, UDP_PORT))
 
 while True:
 	msg, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-	if msg=="init":
-		startHackRF()
+	#if msg=="init":
+	#	startHackRF()
 	#elif msg=="start":
 	#	print("Log entry: Starting an encryption")
 	#elif msg=="stop":

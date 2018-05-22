@@ -18,13 +18,16 @@ for i in range(1,10):
 
 	# Send start
 	sock.sendto("start", (UDP_IP, UDP_PORT))
+
+	time.sleep(1)
 	
 	# Perform the encryption operation
 	time.sleep(1)
 
+	time.sleep(1)
+
 	# Send stop
 	sock.sendto("stop", (UDP_IP, UDP_PORT))
-	time.sleep(1)
 
 # Send quit
 sock.sendto("quit", (UDP_IP, UDP_PORT))

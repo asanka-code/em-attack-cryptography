@@ -20,6 +20,9 @@ SAMP_RATE=2000000
 # Number of samples
 NUM_SAMPS=50000000
 
+# Sampling time duration
+DURATION=$(( ${NUM_SAMPS} / ${SAMP_RATE} ))
+
 # RF amplifier value 0 or 14 dB
 RF_GAIN=0
 
@@ -29,13 +32,6 @@ IF_GAIN=24
 # Baseband (vga) value 0 to 62 dB in 2 dB steps
 BB_GAIN=20
 
-# Date and time
-TIMESTAMP=$(date '+%Y-%m-%d-%H:%M:%S')
-
-# File name
-INFILE=$( echo "./data/hackrf-F${FREQ}-S${SAMP_RATE}-a${RF_GAIN}-l${IF_GAIN}-g${BB_GAIN}-${TIMESTAMP}.iq" )
-OUTFILE=$( echo "./data/hackrf-F${FREQ}-S${SAMP_RATE}-a${RF_GAIN}-l${IF_GAIN}-g${BB_GAIN}-${TIMESTAMP}-filtered.iq" )
-
 echo "HackRF settings:"
 echo "Frequency: ${FREQ}"
 echo "Sample rate: ${SAMP_RATE}"
@@ -43,10 +39,16 @@ echo "Number of samples: ${NUM_SAMPS}"
 echo "RF gain: ${RF_GAIN}"
 echo "IF gain: ${IF_GAIN}"
 echo "Baseband gain: ${BB_GAIN}"
-
+echo "Sampling duration: ${DURATION}s"
 echo "Start sampling..."
 
-hackrf_transfer -r ${INFILE} -f ${FREQ} -s ${SAMP_RATE} -a ${RF_GAIN} -l ${IF_GAIN} -g ${BB_GAIN} -n ${NUM_SAMPS}
+# Date and time
+TIMESTAMP=$(date '+%Y-%m-%d-%H:%M:%S')
+
+# File name
+FILE=$( echo "./data/hackrf-F${FREQ}-S${SAMP_RATE}-a${RF_GAIN}-l${IF_GAIN}-g${BB_GAIN}-${TIMESTAMP}.iq" )
+
+hackrf_transfer -r ${FILE} -f ${FREQ} -s ${SAMP_RATE} -a ${RF_GAIN} -l ${IF_GAIN} -g ${BB_GAIN} -n ${NUM_SAMPS}
 
 if [ $? -eq 0 ]
 then
@@ -56,8 +58,9 @@ else
     exit 1
 fi
 
-echo "Saved data to file: ${INFILE}"
+echo "Saved data to file: ${FILE}"
 
+#OUTFILE=$( echo "./data/hackrf-F${FREQ}-S${SAMP_RATE}-a${RF_GAIN}-l${IF_GAIN}-g${BB_GAIN}-${TIMESTAMP}-filtered.iq" )
 #echo "Starting band-pass filtering..."
 #octave-cli iqprocess.m ${INFILE} ${OUTFILE}
 #echo "Completed filtering"
