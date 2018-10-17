@@ -5,4 +5,6 @@
 
     openssl aes-256-cbc -d -in ciphertext.aes -out decrypted.txt -pass pass:asanka
 
+(2) Collect data using the GNURadio script on the host computer. (Don't use the shellscript which utilize hackrf_transfer command underneath. It doesn't provide the flexibility of the GNURadio modules.)
+
 
