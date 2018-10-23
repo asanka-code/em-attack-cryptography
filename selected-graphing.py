@@ -26,25 +26,6 @@ dat = dat[0::2] + 1j*dat[1::2]
 
 #########################################################################
 
-# Segment starting offset (seconds)
-#t = 0.76 # AES region
-t = 0.95 # normal region
-
-'''
-# Segment window (seconds)
-w = 0.08
-
-# Segment starting offset (sample points)
-start = t * sampleRate
-# Segment ending offset (sample points)
-end = start + (w * sampleRate)
-
-print("start=%d", start)
-print("end=%d", end)
-'''
-
-#########################################################################
-
 def getSegment(time_offset):
     # Segment window (seconds)
     w = 0.08
@@ -57,8 +38,8 @@ def getSegment(time_offset):
     return int(start), int(end)
 
 
-def plotSpectrogram():
-    start, end = getSegment(t)    
+def plotSpectrogram(timeOffset, fileName):
+    start, end = getSegment(timeOffset)    
     plt.specgram(dat[start:end], NFFT=4096, Fs=sampleRate, cmap=plt.cm.get_cmap("Greys"))
     #plt.xlabel("Time (s)")
     #plt.ylabel("Frequency (MHz)")
@@ -67,11 +48,13 @@ def plotSpectrogram():
     ax.xaxis.set_visible(False)
     ax.yaxis.set_visible(False)    
     plt.ylim(-2000000, 2000000)    
-    plt.savefig('spectrogram-from-iq.png', fotmat='png', bbox_inches='tight', pad_inches=0)
+    plt.savefig(fileName +'.png', fotmat='png', bbox_inches='tight', pad_inches=0)
     #plt.savefig('spectrogram-from-iq.pdf', fotmat='pdf', bbox_inches='tight')
     return 1
     
 #########################################################################
-    
-#getSegment(t)
-plotSpectrogram()
+
+# AES region
+plotSpectrogram(0.76, 'with-aes')
+# normal region
+plotSpectrogram(0.95, 'without-aes')
